@@ -1,0 +1,102 @@
+@(server_time : String
+, criteria      :domain.JobSearchCriteria
+, tableCriteria :domain.TableSearch
+)
+
+
+@scripts = {
+
+  <script src="@controllers.web.routes.Assets.versioned("/js/gridjs.production.min.js")" type="text/javascript"></script>
+  <script>
+    var template_stop_route = '@controllers.api.routes.JobManagerController.stop("___job_id___")';
+    var running_job_table_columns = ["id", "job_id", "name", "started_at", "next_run_at", "status", "comment", "_"]
+    function running_job_table_render(item){
+      return [
+        item.id,
+        item.job.id,
+        item.job.name,
+        item.started_at,
+        item.next_run_at ? item.next_run_at : "never",
+        item.status,
+        gridjs.html(
+          `<div class="comment-long">${item.comment}</div>`
+        ),
+        gridjs.html(
+          `<a href="${template_stop_route.replace('___job_id___', item.job.id)}" target="_blank" class="button is-link is-darkm is-outlined">Stop</a>`
+        )
+      ]
+    }
+
+    init_search(
+      "running_job_table",
+      "@controllers.api.routes.JobManagerController.list_running",
+      running_job_table_columns,
+      @tableCriteria.limit,
+      "@tableCriteria.order_by",
+      "@tableCriteria.sort_by",
+      running_job_table_render,
+      "40%"
+    );
+
+
+    var template_run_route      = '@controllers.api.routes.JobManagerController.run("___job_id___")';
+    var template_schedule_route = '@controllers.api.routes.JobManagerController.schedule("___job_id___")';
+    var job_table_columns = ["id", "name", "start_time", "frequency", "method", "url", "_"]
+    function render_actions(item){
+      var run_url = `${template_run_route.replace('___job_id___', item.id)}`
+      var schedule_url = `${template_schedule_route.replace('___job_id___', item.id)}`
+
+      var b1 = `<a href="${run_url}"      class="button is-link is-dark is-outlined">Run</a>`
+      var b2 = `<a href="${schedule_url}" class="button is-link is-dark is-outlined">Schedule</a>`
+      return `${b1} ${b2}`
+    }
+    function job_table_render(item){
+      return [
+        item.id,
+        item.name,
+        item.start_time,
+        item.frequency,
+        item.method,
+        item.url,
+        gridjs.html(render_actions(item))
+      ]
+    }
+
+    init_search(
+      "job_table",
+      "@controllers.api.routes.JobManagerController.list",
+      job_table_columns,
+      @tableCriteria.limit,
+      "@tableCriteria.order_by",
+      "@tableCriteria.sort_by",
+      job_table_render,
+      "40%"
+    );
+  </script>
+}
+
+@layout.app(
+  title   = "Jobs",
+  scripts = scripts
+) {
+
+  <h1 class="subtitle is-2">
+    Running jobs
+    <a
+      href="@controllers.api.routes.JobManagerController.clean()"
+      class="button is-link is-outlined"
+      >
+      Cleaning
+    </a>
+  </h1>
+  <div id="running_job_table"></div>
+
+  <hr>
+
+  <h1 class="subtitle is-2">All jobs </h1>
+  <div id="job_table"></div>
+
+  <p>
+    server time : @server_time
+  </p>
+}

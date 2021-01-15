@@ -1,0 +1,132 @@
+html {
+
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+.comment-long {
+  height: 100px;
+  max-width: 400px;
+  overflow: scroll;
+}
+
+td[data-column-id="_"] {
+  white-space: nowrap;
+}
+
+.layout-form-container{
+  width: 400px;
+  margin: 0 auto;
+}
+
+/**
+ * custom gridjs.io
+ */
+input.gridjs-input{
+  border-color: #111;
+}
+
+.gridjs-footer,
+td.td,
+.gridjs-tbody,
+td.gridjs-td {
+  background-color: #333;
+  border-color: #111;
+  color: #8c9b9d;
+}
+
+th.gridjs-th {
+  background-color: #222;
+  border-color: #111;
+  color: #8c9b9d;
+  box-shadow: 0 1px 0 0 #111;
+  z-index: 1;
+}
+
+button.gridjs-sort {
+  filter: invert(100%);
+}
+
+th.gridjs-th:hover,
+th.gridjs-th:focus {
+  background-color: #111;
+}
+
+.gridjs-pagination {
+  color: #8c9b9d;
+}
+
+.gridjs-pagination .gridjs-pages button {
+  background-color: #333;
+  border-color: #111;
+  color: #8c9b9d;
+}
+
+.gridjs-pagination .gridjs-pages button:hover {
+  background-color: #222;
+  color: #999;
+}
+
+.gridjs-pagination .gridjs-pages button:disabled,
+.gridjs-pagination .gridjs-pages button:hover:disabled,
+.gridjs-pagination .gridjs-pages button[disabled] {
+  background-color: #333;
+  color: #444;
+}
+
+.gridjs-pagination .gridjs-pages button.gridjs-currentPage {
+  background-color: #333;
+  color: #bbb;
+}
+
+.gridjs-pagination .gridjs-pages button.gridjs-spread {
+  background-color: #333;
+}
+
+.gridjs-pagination .gridjs-pages button:last-child{
+  border-color: #111;
+}
+
+/**
+ * custom for the theme https://jenil.github.io/bulmaswatch/darkly
+ */
+.button.is-dark {
+  color: #8c9b9d;
+}
+
+.table {
+  color: #ddd;
+}
+
+.button.is-link.is-outlined.is-focused,
+.button.is-link.is-outlined.is-hovered,
+.button.is-link.is-outlined:focus,
+.button.is-link.is-outlined:hover {
+  color: #333;
+}
+
+input:-internal-autofill-selected,
+input:-internal-autofill-selected:focus,
+input:-internal-autofill-selected:hover,
+input:-internal-autofill-selected:active,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active
+.input,
+.input:hover,
+.input:focus,
+.input:active,
+input,
+input:focus,
+input:hover,
+input:active,
+textarea {
+  background-color: #222 !important;
+  color: #1abc9c !important;
+  -webkit-box-shadow: none;
+  -webkit-text-fill-color: #1abc9c;
+  -webkit-box-shadow: 0 0 0px 1000px #222 inset;
+}

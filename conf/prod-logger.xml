@@ -1,0 +1,31 @@
+<configuration debug="true">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{MMM dd HH:mm:ss} plug-test %-5level: %logger{35}: %m%n%xEx</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SYSLOG-TLS" class="com.papertrailapp.logback.Syslog4jAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{MMM dd HH:mm:ss} particeep-scheduler %-5level: %logger{35}: %m%n%xEx</pattern>
+        </layout>
+        <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogConfig">
+            <host>logsX.papertrailapp.com</host>
+            <port>XXX</port>
+            <sendLocalName>false</sendLocalName>
+            <sendLocalTimestamp>false</sendLocalTimestamp>
+        </syslogConfig>
+    </appender>
+
+    <logger name="play"         level="INFO" />
+    <logger name="akka"         level="INFO" />
+    <logger name="application"  level="INFO" />
+
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="SYSLOG-TLS" />
+    </root>
+
+</configuration>

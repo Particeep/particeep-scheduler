@@ -1,0 +1,46 @@
+@(credentialsForm:  Form[_root_.controllers.web.AuthenticationCredentials]
+, captcha_enabled:  Boolean
+, recaptcha_key:    String
+)(implicit request: RequestHeader, lang:Lang, flash: Flash)
+
+@import _root_.views.html.tags._
+
+@scripts = {
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+}
+
+@main(
+  title = "Login",
+  scripts = scripts
+) {
+
+  <div class="container">
+    <div class="layout-form-container">
+      <div class="layout-form-logo_container">
+        <img src='@controllers.web.routes.Assets.versioned("img/Particeep-Plug.png")' class="layout-form-logo" />
+      </div>
+      @common.flashMsg()<br>
+
+      @html.form(
+        action = controllers.web.routes.AuthenticationController.authenticate(),
+        Symbol("class") -> "login-form",
+        Symbol("autocomplete") -> "false"
+      ) {
+        <div class="field">
+          <label class="label" for="email-input">Email</label>
+          <input class="input" name="email" type="email" id="email-input">
+        </div>
+        <div class="field">
+          <label class="label" for="pwd-input">Password</label>
+          <input class="input" name="password" type="password" id="pwd-input">
+        </div>
+        @recaptchaField(recaptcha_key, captcha_enabled, credentialsForm)
+        <div class="field">
+          <div class="control">
+            <button class="button is-link is-outlined is-primary is-fullwidth">Login</button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

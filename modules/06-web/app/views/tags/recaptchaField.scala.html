@@ -1,0 +1,22 @@
+@**
+ * Generate a recaptcha field
+ *
+ * Example:
+ * {{{
+ * @recaptcha.recaptchaField(recaptcha_key = "123")
+ * }}}
+ *
+ * @param key The google api key.
+ *@
+@(recaptcha_key  :String
+, captcha_enabled:Boolean
+, form: Form[_]
+)(implicit lang:Lang)
+
+@if(captcha_enabled){
+  <div class="g-recaptcha" data-sitekey="@recaptcha_key"></div>
+
+  <div class="g-recaptcha-error">
+    @{form.error("com.nappin.play.recaptcha.error").map(err => err.message).mkString("<br>")}
+  </div>
+}

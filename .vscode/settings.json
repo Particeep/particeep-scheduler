@@ -1,0 +1,14 @@
+{
+  "files.watcherExclude": {
+    "**/target": true
+  },
+  "files.exclude": {
+    ".idea": true,
+    ".metals": true,
+    "**/target": true
+  },
+  "editor.formatOnSave": true,
+  "[sql]": {
+    "editor.formatOnSave": false
+  }
+}

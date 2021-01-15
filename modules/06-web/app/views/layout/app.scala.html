@@ -1,0 +1,22 @@
+@(title       :String
+, styles      :Html         = Html("")
+, scripts     :Html         = Html("")
+)(content: Html)
+
+@moreStyles = {
+  <link href="@controllers.web.routes.Assets.versioned("css/mermaid.min.css")" rel="stylesheet" />
+  @styles
+}
+
+@main(
+  title,
+  moreStyles,
+  scripts
+) {
+
+  @navbar()
+
+  <div class="container">
+    @content
+  </div>
+}

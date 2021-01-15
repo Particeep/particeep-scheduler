@@ -1,0 +1,16 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# https://www.playframework.com/documentation/latest/ScalaRouting
+# ~~~~
+
+# Jobs
+GET     /jobs/:job_id/run           controllers.api.JobManagerController.run(job_id)
+GET     /jobs/:job_id/schedule      controllers.api.JobManagerController.schedule(job_id)
+GET     /jobs/:job_id/stop          controllers.api.JobManagerController.stop(job_id)
+GET     /jobs/list                  controllers.api.JobManagerController.list()
+GET     /jobs/running/list          controllers.api.JobManagerController.list_running()
+GET     /jobs/clean                 controllers.api.JobManagerController.clean()
+
+# Executions
+
+GET     /result/list                controllers.api.ExecutionController.list()

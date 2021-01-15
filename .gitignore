@@ -1,0 +1,14 @@
+logs
+target
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+.DS_Store
+.metals/
+.bloop/
+.ammonite/
+project/metals.sbt
+metals.sbt

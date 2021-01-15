@@ -1,0 +1,35 @@
+@()(implicit request: RequestHeader, lang:Lang, flash: Flash)
+
+@import _root_.utils.m
+
+@if(flash.get("error").isDefined ||
+    flash.get("success").isDefined ||
+    flash.get("info").isDefined ||
+    flash.get("warning").isDefined
+) {
+<div class="flashMsgWrapper">
+
+    @flash.get("error").map{ msg =>
+      <div id="flashErrorMsg" class="alert alert-danger">
+        <span>@if(msg.startsWith("error.")) { @m(msg) } else { @msg }</span>
+      </div>
+    }
+
+    @flash.get("success").map{ msg =>
+      <div id="flashSuccessMsg" class="alert alert-success">
+        <span>@m(msg)</span>
+      </div>
+    }
+    @flash.get("info").map{ msg =>
+      <div id="flashInfoMsg" class="alert alert-info">
+        <span>@m(msg)</span>
+      </div>
+    }
+
+    @flash.get("warning").map{ msg =>
+      <div id="flashWarningMsg" class="alert alert-warning">
+        <span>@m(msg)</span>
+      </div>
+    }
+</div>
+}
