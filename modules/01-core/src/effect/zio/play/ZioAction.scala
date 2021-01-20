@@ -16,7 +16,7 @@ trait ZioAction[Config] extends Logging {
 
   implicit class ActionBuilderOps[+R[_], B](actionBuilder: ActionBuilder[R, B]) {
 
-    def zio(zioActionBody: R[B] => ZIO[Any, Fail, Result]): Action[B] = actionBuilder.async { request =>
+    def zio(zioActionBody: R[B] => ZIO[Config, Fail, Result]): Action[B] = actionBuilder.async { request =>
       runtime.unsafeRunToFuture(
         appEffectToResult(zioActionBody(request))
       )
@@ -25,7 +25,7 @@ trait ZioAction[Config] extends Logging {
     def zio[A](
       bp:            BodyParser[A]
     )(
-      zioActionBody: R[A] => ZIO[Any, Fail, Result]
+      zioActionBody: R[A] => ZIO[Config, Fail, Result]
     ): Action[A] = actionBuilder(bp).async { request =>
       val result = runtime.unsafeRunToFuture(
         appEffectToResult(zioActionBody(request))
@@ -40,7 +40,7 @@ trait ZioAction[Config] extends Logging {
       result
     }
 
-    private[this] def appEffectToResult[E](effect: ZIO[Any, Fail, Result]): ZIO[Any, Throwable, Result] = {
+    private[this] def appEffectToResult[E](effect: ZIO[Config, Fail, Result]): ZIO[Config, Throwable, Result] = {
       effect
         .either
         .map {

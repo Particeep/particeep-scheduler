@@ -8,10 +8,10 @@ import zio.clock._
 
 trait SchedulerService {
 
-  def scheduleAsDeamon[A](
-    effect: ZIO[Any, Fail, A],
+  def scheduleAsDeamon[E, A](
+    effect: ZIO[E, Fail, A],
     policy: Schedule[Any, Any, Long]
-  ): ZIO[Any, Nothing, Fiber.Runtime[Fail, Long]]
+  ): ZIO[E with Clock, Nothing, Fiber.Runtime[Fail, Long]]
 }
 
 object SchedulerService extends Logging {
@@ -21,21 +21,20 @@ object SchedulerService extends Logging {
     /**
      * https://fr.slideshare.net/jdegoes/zio-schedule-conquering-flakiness-recurrence-with-pure-functional-programming-119932802
      */
-    def scheduleAsDeamon[A](
-      effect: ZIO[Any, Fail, A],
+    def scheduleAsDeamon[E, A](
+      effect: ZIO[E, Fail, A],
       policy: Schedule[Any, Any, Long]
-    ): ZIO[Any, Nothing, Fiber.Runtime[Fail, Long]] = {
+    ): ZIO[E with Clock, Nothing, Fiber.Runtime[Fail, Long]] = {
       schedule(effect, policy)
     }
 
-    private[this] def schedule[A](
-      effect: ZIO[Any, Fail, A],
+    private[this] def schedule[E, A](
+      effect: ZIO[E, Fail, A],
       policy: Schedule[Any, Any, Long]
-    ): IO[Nothing, Fiber.Runtime[Fail, Long]] = {
+    ): ZIO[E with Clock, Nothing, Fiber.Runtime[Fail, Long]] = {
       effect
         .schedule(policy)
         .forkDaemon
-        .provide(clock)
     }
 
     private[this] def onScheduleError[A](fail: Fail, maybe_count: Option[Long]): UIO[Long] = {
@@ -51,10 +50,12 @@ object SchedulerService extends Logging {
     ZLayer.fromFunction[Clock, SchedulerService](env => new Live(env))
   }
 
-  def scheduleAsDeamon[A](
-    effect: ZIO[Any, Fail, A],
+  def scheduleAsDeamon[E, A](
+    effect: ZIO[E, Fail, A],
     policy: Schedule[Any, Any, Long]
-  ): ZIO[Has[SchedulerService], Nothing, Fiber.Runtime[Fail, Long]] = {
-    ZIO.accessM(_.get.scheduleAsDeamon(effect, policy))
+  ): ZIO[E with Clock with Has[SchedulerService], Nothing, Fiber.Runtime[Fail, Long]] = {
+    ZIO.accessM[E with Clock with Has[SchedulerService]] {
+      _.get[SchedulerService].scheduleAsDeamon(effect, policy)
+    }
   }
 }

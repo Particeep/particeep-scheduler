@@ -22,14 +22,12 @@ class JobController @Inject() () extends MainController {
   )
 
   def list() = Action.zio { implicit request =>
-    val effect = for {
+    for {
       tableCriteria <- tableSearchForm.bindFromRequest()    ?| ()
       criteria      <- criteriaSearchForm.bindFromRequest() ?| ()
       server_time   <- currentDateTime                      ?| "can't get current date time"
     } yield {
       Ok(views.html.jobs.list(TimeUtils.toIso(server_time), criteria, tableCriteria))
     }
-
-    effect.provideLayer(layer)
   }
 }

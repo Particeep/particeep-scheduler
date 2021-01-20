@@ -25,14 +25,12 @@ class ExecutionController extends MainController with JsonParser {
   )
 
   def list() = Action.zio { implicit request =>
-    val prog = for {
+    for {
       criteria       <- executionSearchForm.bindFromRequest() ?| ()
       tableCriteria  <- tableSearchForm.bindFromRequest()     ?| ()
       execution_list <- ExecutionRepository.search(criteria, tableCriteria)
     } yield {
       Ok(Json.toJson(execution_list))
     }
-
-    prog.provideLayer(layer)
   }
 }
