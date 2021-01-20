@@ -11,7 +11,7 @@
   var base_limit = @tableCriteria.limit;
   var base_order_by = "@tableCriteria.order_by";
   var base_sort_by  = "@tableCriteria.sort_by";
-  var base_url = "@controllers.api.routes.ExecutionController.list";
+  var base_url = "@controllers.api.routes.ExecutionController.list()";
 
   function render_data(item) {
     return [item.id, item.job_id, item.executed_at, item.status,

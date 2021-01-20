@@ -17,7 +17,8 @@ lazy val commonSettings = Seq(
   // concurrentRestrictions in Global += Tags.limit(Tags.Test, 1),
   scalacOptions ++= compiler_option,
 //  routesGenerator := InjectedRoutesGenerator,
-  updateOptions := updateOptions.value.withCachedResolution(true)
+  updateOptions := updateOptions.value.withCachedResolution(true),
+  sources in (Compile, doc) := Seq.empty
 )
 
 lazy val playSettings = commonSettings ++ Seq(
