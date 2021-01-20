@@ -29,7 +29,7 @@
 
     init_search(
       "running_job_table",
-      "@controllers.api.routes.JobManagerController.list_running",
+      "@controllers.api.routes.JobManagerController.list_running()",
       running_job_table_columns,
       @tableCriteria.limit,
       "@tableCriteria.order_by",
@@ -64,7 +64,7 @@
 
     init_search(
       "job_table",
-      "@controllers.api.routes.JobManagerController.list",
+      "@controllers.api.routes.JobManagerController.list()",
       job_table_columns,
       @tableCriteria.limit,
       "@tableCriteria.order_by",
