@@ -27,30 +27,26 @@ class JobManagerController extends MainController with JsonParser {
   private[this] lazy val running_jobs = runtime.unsafeRun(Ref.make(List[RunningJob]()))
 
   def clean() = Action.zio { implicit request =>
-    val effect = for {
+    for {
       _ <- RunningJobService.clean(Fiber.Status.Done)
     } yield {
       Redirect(routes.JobManagerController.list())
     }
-
-    effect.provideLayer(layer)
   }
 
   def stop(running_job_id: String) = Action.zio { implicit request =>
-    val effect = for {
+    for {
       _ <- RunningJobService.stop(RunningJobId.from(running_job_id))
     } yield {
       Redirect(routes.JobManagerController.list())
     }
-
-    effect.provideLayer(layer)
   }
 
   def run(job_id: String) = Action.zio { implicit request =>
-    val effect = for {
+    for {
       job          <- JobRepository.load(JobId.from(job_id))
-      policy        = Schedule.recurs(1) //SchedulerOperation.computeSchedule(job, TimeUtils.now())
-      effect_to_run = JobService.runOnce(job).provideLayer(layer)
+      policy        = Schedule.recurs(1)
+      effect_to_run = JobService.runOnce(job)
       fiber        <- SchedulerService.scheduleAsDeamon(effect_to_run, policy)
       new_job       = RunningJob(
                         job        = job,
@@ -61,15 +57,13 @@ class JobManagerController extends MainController with JsonParser {
     } yield {
       Redirect(routes.JobManagerController.list())
     }
-
-    effect.provideLayer(layer)
   }
 
   def schedule(job_id: String) = Action.zio { implicit request =>
-    val effect = for {
+    for {
       job          <- JobRepository.load(JobId.from(job_id))
       policy       <- SchedulerOperation.computeSchedule(job, TimeUtils.now())
-      effect_to_run = JobService.runOnce(job).provideLayer(layer)
+      effect_to_run = JobService.runOnce(job)
       fiber        <- SchedulerService.scheduleAsDeamon(effect_to_run, policy)
       new_job       = RunningJob(
                         job        = job,
@@ -80,24 +74,20 @@ class JobManagerController extends MainController with JsonParser {
     } yield {
       Redirect(routes.JobManagerController.list())
     }
-
-    effect.provideLayer(layer)
   }
 
   def list() = Action.zio { implicit request =>
-    val effect = for {
+    for {
       tableSearch <- tableSearchForm.bindFromRequest()    ?| ()
       criteria    <- criteriaSearchForm.bindFromRequest() ?| ()
       job_list    <- JobRepository.search(criteria, tableSearch)
     } yield {
       Ok(Json.toJson(job_list))
     }
-
-    effect.provideLayer(layer)
   }
 
   def list_running() = Action.zio { implicit request =>
-    val effect = for {
+    for {
       tableSearch      <- tableSearchForm.bindFromRequest() ?| ()
       all_running_jobs <- RunningJobService.list()
       running_job_list <- RunningJobService.formatForDislay(all_running_jobs)
@@ -108,8 +98,6 @@ class JobManagerController extends MainController with JsonParser {
       )
       Ok(Json.toJson(result))
     }
-
-    effect.provideLayer(layer)
   }
 
   protected val criteriaSearchForm = Form(

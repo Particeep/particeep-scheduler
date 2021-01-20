@@ -57,7 +57,7 @@ class JobOperation(
     }
 
     effect
-  }.provide(Has(scheduler_service) ++ Has(running_job_service))
+  }.provide(Has(scheduler_service) ++ Has(running_job_service) ++ Has(clock))
 
   def runOnce(job: Job): ZIO[Any, Fail, Execution] = {
     val http_req = buildHttpRequest(job)
