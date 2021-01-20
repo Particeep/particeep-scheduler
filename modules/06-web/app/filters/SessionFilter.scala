@@ -15,6 +15,7 @@ import java.time.ZoneOffset
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.Try
+import utils.TimeUtils
 
 /**
  * BlackListCookieFilter is a filter that allow logout to disable session totally
@@ -68,6 +69,6 @@ class SessionFilter @Inject() (val mat: Materializer, ec: ExecutionContext, conf
     session.get("expire_at")
       .flatMap(d => Try(d.toLong).toOption)
       .map(date => OffsetDateTime.ofInstant(Instant.ofEpochSecond(date), ZoneOffset.UTC))
-      .map(_.isAfter(OffsetDateTime.now(ZoneOffset.UTC))) getOrElse (false)
+      .map(_.isBefore(TimeUtils.now())) getOrElse (false)
   }
 }
