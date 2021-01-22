@@ -10,6 +10,7 @@ import play.api.data.Forms._
 import play.api.i18n.{ I18nSupport, Lang }
 import play.api.mvc._
 import web.wiring.ZioRuntime
+import effect.zio.play.ZioActionBuilderOps
 
 trait MainController
   extends InjectedController
@@ -18,8 +19,10 @@ trait MainController
     with PlayHelper {
 
   @Inject() private[this] var _runtime: ZioRuntime = _
-  lazy val runtime                                 = _runtime.runtime
+  implicit lazy val runtime                        = _runtime.runtime
   lazy val layer                                   = _runtime.live
+
+  implicit def toZio[R[_], B](actionBuilder: ActionBuilder[R, B]) = new ZioActionBuilderOps(actionBuilder)
 
   implicit def request2lang(implicit request: Request[_]): Lang = {
     request.lang
