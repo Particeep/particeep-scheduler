@@ -6,6 +6,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 import tagging.AnyTypeclassTaggingCompat
+import utils.json.OWritesOps._
 import utils.json.AdtFormat
 
 trait JsonParser extends AnyTypeclassTaggingCompat {
@@ -27,6 +28,10 @@ trait JsonParser extends AnyTypeclassTaggingCompat {
   implicit val table_search_format = Jsonx.formatCaseClassUseDefaults[TableSearch]
   implicit val execution_format    = Jsonx.formatCaseClassUseDefaults[Execution]
   implicit val credentials_format  = Jsonx.formatCaseClassUseDefaults[HmacCredential]
-  implicit val job_format          = Jsonx.formatCaseClassUseDefaults[Job]
-  implicit val running_job_format  = Jsonx.formatCaseClassUseDefaults[RunningJobDisplay]
+
+  private[this] val jobs_reads  = Jsonx.formatCaseClassUseDefaults[Job]
+  private[this] val jobs_writes = jobs_reads.removeField("credentials")
+  implicit val jobs_format      = Format(jobs_reads, jobs_writes)
+
+  implicit val running_job_format = Jsonx.formatCaseClassUseDefaults[RunningJobDisplay]
 }
