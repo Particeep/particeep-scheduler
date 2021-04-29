@@ -60,10 +60,10 @@ class JobOperation(
   }.provide(Has(scheduler_service) ++ Has(running_job_service) ++ Has(clock))
 
   def runOnce(job: Job): ZIO[Any, Fail, Execution] = {
-    val http_req = buildHttpRequest(job)
     val timeout  = config.get[Long]("job.request.timeout_ms")
 
     for {
+      http_req  <- ZIO.succeed(buildHttpRequest(job))
       execution <- runHttpRequest(ws_client, http_req, timeout).either.map(parseResponse(job))
       _         <- executions.store(execution)
     } yield {
