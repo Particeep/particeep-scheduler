@@ -137,7 +137,7 @@ private[hmac] trait HmacCanonizer { self: HmacCoreSecurity =>
 
     s"""${req.verb}
        |${req.body_hash.getOrElse("")}
-       |${req.content_type.getOrElse("")}
+       |${req.content_type.getOrElse("application/octet-stream")}
        |${req.date}
        |$custom""".stripMargin
   }
