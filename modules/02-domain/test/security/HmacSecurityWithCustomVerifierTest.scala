@@ -21,7 +21,7 @@ class HmacSecurityWithCustomVerifierTest
       val auth     = security.authorization_header(req)
 
       auth must startWith("HMAC a_key:")
-      auth mustBe "HMAC a_key:OTMyZTkzMDU4NjM5MWJiNWJmOGM4ZjliMDkzYjY4MjlhOTFhYjVjMQ=="
+      auth mustBe "HMAC a_key:NTg4NTZiMDQ5MDBhZTVlMDUzMmFmNTU1YjA1YmE1NzJlNmNhOTI5Ng=="
 
       verify_security(security, auth, req) mustBe true
     }
@@ -52,7 +52,7 @@ class HmacSecurityWithCustomVerifierTest
 
       val auth = security.authorization_header(req)
       auth must startWith("HMAC a_key:")
-      auth mustBe "HMAC a_key:YzgyZDZlZGUxNDA2MzA3NjNjOTYyZmM2M2E1ZGJiZjRhZjQ3OGEyNg=="
+      auth mustBe "HMAC a_key:ZmVjMjI3M2Q5YzgwMzk5ZjlmYjI1ZGYzNjRiOTgwOGYwMWRkNDdiOQ=="
 
       verify_security(security, auth, req) mustBe true
     }
@@ -76,7 +76,7 @@ class HmacSecurityWithCustomVerifierTest
       val auth = security.authorization_header(req)
       auth must startWith("HMAC a_key:")
 
-      auth mustBe "HMAC a_key:MmQ4ZWYwZmYxYTQ1ZDEzOWJkNGU3NjRjYjhkODQ2MzUxNDg0M2U4ZA=="
+      auth mustBe "HMAC a_key:NTMwNGJjZGE4OWI3NTljYTc0NTc4NzI0YWQ0MDZlNGI0OWZlNGRjMQ=="
 
       verify_security(security, auth, req) mustBe false
     }
