@@ -3,7 +3,7 @@ name := """particeep-scheduler"""
 lazy val commonSettings = Seq(
   organization := "com.particeep",
   version := "1.0.0",
-  scalaVersion := "2.13.4",
+  scalaVersion := "2.13.8",
 //  resolvers ++= Seq(
 //    "bitbucket-release" at "https://bitbucket.org/Adrien/particeep-repository/raw/master/repository/"
 //    , "Bintray_DL" at "https://dl.bintray.com/kamon-io/releases/"

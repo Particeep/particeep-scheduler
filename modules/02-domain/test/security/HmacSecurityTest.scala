@@ -54,7 +54,7 @@ class HmacSecurityTest
 
       auth must startWith("HMAC a_key:")
 
-      val expected_auth = "HMAC a_key:MWEwMjIzZjIwNDlkNjMwYmVmMDYxZTE3M2ViN2M5NDNiZTc1Yjg0OQ=="
+      val expected_auth = "HMAC a_key:MjU4YTkyYTVkNjBmZGU1NTJiYzJlZGJkZjU1MTE1MmVlODIxNDA4MQ=="
       verify_security(security, expected_auth, req) mustBe true
     }
 
@@ -85,9 +85,6 @@ class HmacSecurityTest
       val expected_auth =
         "HMAC a_key:NjMzMDM5MzEzNzM5Mzg2NTM5MzEzOTM3NjI2NjY1MzEzMDM2MzU2NjM0NjIzMDM1MzkzMzM4MzgzMDM3NjEzMDM5NjUzOTY1MzQzNzMzMzI="
 
-      //val effect = security.verify(expected_auth, req)
-      //val result = run(effect)
-      //result mustBe Left("date 2019-04-09T13:29:23Z is not in the timeframe 1 min")
       verify_security(security, expected_auth, req) mustBe false
     }
 
