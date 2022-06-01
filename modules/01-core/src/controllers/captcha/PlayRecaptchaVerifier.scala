@@ -5,6 +5,7 @@ import play.api.data.Form
 import play.api.libs.ws.WSClient
 import play.api.mvc.{ AnyContent, Request }
 import play.api.{ Configuration, Environment }
+import play.api.data.FormBinding.Implicits._
 
 import scala.concurrent.{ ExecutionContext, Future }
 
